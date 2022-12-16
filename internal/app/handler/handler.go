@@ -1,4 +1,4 @@
-package endpoint
+package handler
 
 import (
 	"fmt"
@@ -11,17 +11,17 @@ type Service interface {
 	Days() int64
 }
 
-type Endpoint struct {
+type Handler struct {
 	svc Service
 }
 
-func New(svc Service) *Endpoint {
-	return &Endpoint{
+func New(svc Service) *Handler {
+	return &Handler{
 		svc,
 	}
 }
 
-func (e *Endpoint) MainPage(ctx echo.Context) error {
+func (e *Handler) MainPage(ctx echo.Context) error {
 	days := e.svc.Days()
 	answer := fmt.Sprintf("Days: %d", days)
 	err := ctx.String(http.StatusOK, answer)

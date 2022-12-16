@@ -3,27 +3,27 @@ package app
 import (
 	"github.com/labstack/echo/v4"
 	"log"
-	"middleware-test/internal/app/endpoint"
+	"middleware-test/internal/app/handler"
 	"middleware-test/internal/app/middleware"
 	"middleware-test/internal/app/service"
 )
 
 type App struct {
-	ep     *endpoint.Endpoint
-	svc    *service.Service
-	server *echo.Echo
+	handler *handler.Handler
+	service *service.Service
+	server  *echo.Echo
 }
 
 func New() (*App, error) {
 	a := &App{}
 
-	a.svc = service.New()
-	a.ep = endpoint.New(a.svc)
+	a.service = service.New()
+	a.handler = handler.New(a.service)
 	a.server = echo.New()
 
 	a.server.Use(middleware.RoleCheck)
 
-	a.server.GET("/", a.ep.MainPage)
+	a.server.GET("/", a.handler.MainPage)
 
 	return a, nil
 }
